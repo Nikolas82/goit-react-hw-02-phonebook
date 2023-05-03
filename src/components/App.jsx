@@ -12,7 +12,7 @@ export class App extends Component {
 
   formSubmitHandler = data => {
     const existingContact = this.state.contacts.find(
-      contact => contact.name === data.name
+      contact => contact.name.toLowerCase() === data.name.toLowerCase()
     );
 
     existingContact && alert(`${data.name} is already in contacts`);
@@ -51,6 +51,7 @@ export class App extends Component {
           textAlign: 'center',
           flexDirection: 'column',
           marginTop: '40px',
+          marginBottom:"40px",
         }}
       >
         <h1>Phonebook</h1>
