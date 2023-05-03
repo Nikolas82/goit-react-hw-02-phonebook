@@ -12,10 +12,12 @@ export class App extends Component {
 
   formSubmitHandler = data => {
     const existingContact = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === data.name.toLowerCase()
+      contact => contact.name.toLowerCase() === data.name.toLowerCase() || contact.number === data.number
     );
-
-    existingContact && alert(`${data.name} is already in contacts`);
+   if( existingContact){
+    return alert(`${data.name} or ${data.number} is already in contacts`);
+   }
+     
 
     this.setState(prevState => ({
       contacts: [...prevState.contacts, data],
@@ -32,9 +34,10 @@ export class App extends Component {
     this.setState({ filter: e.target.value });
   };
 
+  
+
   render() {
     const { filter, contacts } = this.state;
-
     const normalizedFilter = filter.toLowerCase();
     const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
@@ -57,7 +60,7 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <ContactForm onPropSubmit={this.formSubmitHandler} />
         <h2>Contacts</h2>
-        <Filter valueFilter={filter} onChangeFilter={this.changeFilter} />
+        <Filter valueFilter={this.state.filter} onChangeFilter={this.changeFilter} />
 
         <ContactList
           contacts={filteredContacts}
