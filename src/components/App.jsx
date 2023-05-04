@@ -12,12 +12,13 @@ export class App extends Component {
 
   formSubmitHandler = data => {
     const existingContact = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === data.name.toLowerCase() || contact.number === data.number
+      contact =>
+        contact.name.toLowerCase() === data.name.toLowerCase() ||
+        contact.number === data.number
     );
-   if( existingContact){
-    return alert(`${data.name} or ${data.number} is already in contacts`);
-   }
-     
+    if (existingContact) {
+      return alert(`${data.name} or ${data.number} is already in contacts`);
+    }
 
     this.setState(prevState => ({
       contacts: [...prevState.contacts, data],
@@ -34,15 +35,15 @@ export class App extends Component {
     this.setState({ filter: e.target.value });
   };
 
-  
-
-  render() {
+  getFilteredContacts() {
     const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
-    const filteredContacts = contacts.filter(contact =>
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
+  }
 
+  render() {
     return (
       <div
         style={{
@@ -54,16 +55,19 @@ export class App extends Component {
           textAlign: 'center',
           flexDirection: 'column',
           marginTop: '40px',
-          marginBottom:"40px",
+          marginBottom: '40px',
         }}
       >
         <h1>Phonebook</h1>
         <ContactForm onPropSubmit={this.formSubmitHandler} />
         <h2>Contacts</h2>
-        <Filter valueFilter={this.state.filter} onChangeFilter={this.changeFilter} />
+        <Filter
+          valueFilter={this.state.filter}
+          onChangeFilter={this.changeFilter}
+        />
 
         <ContactList
-          contacts={filteredContacts}
+          contacts={this.getFilteredContacts()}
           onDeleteContact={this.deleteContact}
         />
       </div>
